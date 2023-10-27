@@ -74,3 +74,20 @@ class DBStorage:
     def close(self):
         """ calls remove """
         self.__session.close()
+
+    def get(self, cls, id):
+        """
+        Returns one object based on the class and id,
+        or None if not found
+        """
+        return self.all().get(
+            f'{cls.__name__}.{id}',
+            None
+        )
+
+    def count(self, cls=None):
+        """
+        Returns the number of objects in storage matching the given class,
+        or the count of all objects in storage if no class is passed
+        """
+        return len(self.all(cls))

@@ -7,6 +7,7 @@ from datetime import datetime
 import inspect
 import models
 from models.engine import db_storage
+from models import storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.city import City
@@ -14,6 +15,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+from sqlalchemy.orm import scoped_session
 import json
 import os
 import pep8
@@ -68,29 +70,118 @@ test_db_storage.py'])
                             "{:s} method needs a docstring".format(func[0]))
 
 
-class TestFileStorage(unittest.TestCase):
-    """Test the FileStorage class"""
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_all_returns_dict(self):
-        """Test that all returns a dictionaty"""
-        self.assertIs(type(models.storage.all()), dict)
+@unittest.skipIf(
+    os.getenv('HBNB_TYPE_STORAGE') != 'db',
+    'Not a file storage'
+)
+class TestDBStorage(unittest.TestCase):
+    """Test cases for db storage"""
+    def setUp(self):
+        """setup method"""
+        self.session = storage._DBStorage__session
+        texas = State()
+        texas.name = 'Texas'
+        austin = City()
+        austin.name = 'Austin'
+        austin.state_id = texas.id
+        dallas = City()
+        dallas.name = 'Dallas'
+        dallas.state_id = texas.id
+        self.objs = {'states': [texas], 'cities': [austin, dallas]}
 
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_all_no_class(self):
-        """Test that all returns all rows when no class is passed"""
+        for obj in self.objs['states'] + self.objs['cities']:
+            self.session.add(obj)
+        self.session.commit()
 
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def tearDown(self):
+        """tearDown method"""
+        for obj in self.objs['states'] + self.objs['cities']:
+            self.session.delete(obj)
+        self.session.commit()
+
+    def test_all(self):
+        """Test all"""
+        objs_from_db = storage.all()
+        self.assertIsInstance(objs_from_db, dict)
+        self.assertEqual(
+            sorted(list(map(
+                lambda obj: obj.id, self.objs['states'] + self.objs['cities']
+            ))),
+            sorted(list(map(lambda obj: obj.id, objs_from_db.values())))
+        )
+
+    def test_filtered_all(self):
+        """Test filtered all"""
+        cities = storage.all(City)
+        self.assertEqual(
+            sorted(list(map(
+                lambda obj: obj.id, self.objs['cities']
+            ))),
+            sorted(list(map(lambda obj: obj.id, cities.values())))
+        )
+
     def test_new(self):
-        """test that new adds an object to the database"""
+        """Test new"""
+        city = City()
+        city.name = 'Houston'
+        city.state_id = self.objs['states'][0].id
+        self.objs['cities'].append(city)
+        storage.new(city)
+        self.session.commit()
+        cities = self.session.query(City)
+        self.assertEqual(
+            sorted(list(map(
+                lambda obj: obj.id, self.objs['cities']
+            ))),
+            sorted(list(map(lambda obj: obj.id, cities)))
+        )
 
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
-        """Test that save properly saves objects to file.json"""
+        """Test save"""
+        self.session.delete(self.objs['cities'].pop())
+        storage.save()
+        cities = self.session.query(City)
+        self.assertEqual(
+            sorted(list(map(
+                lambda obj: obj.id, self.objs['cities']
+            ))),
+            sorted(list(map(lambda obj: obj.id, cities)))
+        )
 
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_delete(self):
+        """Test delete"""
+        storage.delete(self.objs['cities'].pop())
+        self.session.commit()
+        cities = self.session.query(City)
+        self.assertEqual(
+            sorted(list(map(
+                lambda obj: obj.id, self.objs['cities']
+            ))),
+            sorted(list(map(lambda obj: obj.id, cities)))
+        )
+
+    def test_reload(self):
+        """Test reload"""
+        storage.reload()
+        self.assertIsInstance(storage._DBStorage__session, scoped_session)
+        self.assertNotEqual(self.session, storage._DBStorage__session)
+        storage._DBStorage__session.close()
+        storage._DBStorage__session = self.session
+
     def test_get(self):
-        """Test get method"""
+        """Test get"""
+        self.assertEqual(
+            storage.all()[f'State.{self.objs["states"][0].id}'],
+            storage.get(State, self.objs["states"][0].id)
+        )
 
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_count(self):
-        """Test count method"""
+        """Test count"""
+        self.assertEqual(
+            len(storage.all()),
+            storage.count()
+        )
+        self.assertEqual(
+            len(storage.all(City)),
+            storage.count(City)
+        )

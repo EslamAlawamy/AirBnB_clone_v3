@@ -53,7 +53,7 @@ class DBStorage:
 
     def get(self, cls, id):
         """
-        Returns the object based on the class and its ID,
+        Returns the object based on its class and its ID,
         or None if not found
         """
         return self.all().get(

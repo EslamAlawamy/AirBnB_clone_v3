@@ -20,6 +20,7 @@ def get_cities(state_id):
 
     return jsonify(list_cities)
 
+
 @app_views.route('/cities/<city_id>', methods=['GET'], strict_slashes=False)
 def get_city(city_id):
     """ Retrieves a City object """

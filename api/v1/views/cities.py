@@ -17,7 +17,6 @@ def get_cities(state_id):
         abort(404)
     for city in state.cities:
         list_cities.append(city.to_dict())
-
     return jsonify(list_cities)
 
 

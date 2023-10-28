@@ -81,7 +81,7 @@ class DBStorage:
         or None if not found
         """
         return self.all().get(
-            f'{cls}.{id}',
+            f'{cls.__name__}.{id}',
             None
         )
 

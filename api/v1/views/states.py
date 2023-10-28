@@ -7,12 +7,14 @@ from models.state import State  # Import the State model
 # Retrieves the list of all State objects
 @app.route('/api/v1/states', methods=['GET'])
 def get_states():
+    """gsdf"""
     states = State.get_all_states()  # Implement this method in your State model
     return jsonify([state.to_dict() for state in states])
 
 # Retrieves a State object
 @app.route('/api/v1/states/<state_id>', methods=['GET'])
 def get_state(state_id):
+    """gsdf"""
     state = State.get_state_by_id(state_id)  # Implement this method in your State model
     if state is None:
         abort(404)
@@ -21,6 +23,7 @@ def get_state(state_id):
 # Deletes a State object
 @app.route('/api/v1/states/<state_id>', methods=['DELETE'])
 def delete_state(state_id):
+    """gsdf"""
     state = State.get_state_by_id(state_id)  # Implement this method in your State model
     if state is None:
         abort(404)
@@ -30,6 +33,7 @@ def delete_state(state_id):
 # Creates a State
 @app.route('/api/v1/states', methods=['POST'])
 def create_state():
+    """gsdf"""
     data = request.get_json()
     if data is None:
         abort(400, "Not a JSON")
@@ -42,6 +46,7 @@ def create_state():
 # Updates a State object
 @app.route('/api/v1/states/<state_id>', methods=['PUT'])
 def update_state(state_id):
+    """gsdf"""
     state = State.get_state_by_id(state_id)  # Implement this method in your State model
     if state is None:
         abort(404)

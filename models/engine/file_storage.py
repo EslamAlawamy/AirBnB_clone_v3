@@ -75,7 +75,7 @@ class FileStorage:
         or None if not found
         """
         return self.all().get(
-            f'{cls.__nams__}.{id}',
+            f'{cls.__name__}.{id}',
             None
         )
 

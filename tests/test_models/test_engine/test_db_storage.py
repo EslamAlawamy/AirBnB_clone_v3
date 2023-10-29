@@ -2,24 +2,20 @@
 """
 Contains the TestDBStorageDocs and TestDBStorage classes
 """
-
-from datetime import datetime
 import inspect
-import models
+import os
+import unittest
+from sqlalchemy.orm import scoped_session
+import pep8
 from models.engine import db_storage
 from models import storage
 from models.amenity import Amenity
-from models.base_model import BaseModel
 from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-from sqlalchemy.orm import scoped_session
-import json
-import os
-import pep8
-import unittest
+
 DBStorage = db_storage.DBStorage
 classes = {"Amenity": Amenity, "City": City, "Place": Place,
            "Review": Review, "State": State, "User": User}
@@ -65,9 +61,9 @@ test_db_storage.py'])
         """Test for the presence of docstrings in DBStorage methods"""
         for func in self.dbs_f:
             self.assertIsNot(func[1].__doc__, None,
-                             "{:s} method needs a docstring".format(func[0]))
+                            f"{func[0]} method needs a docstring")
             self.assertTrue(len(func[1].__doc__) >= 1,
-                            "{:s} method needs a docstring".format(func[0]))
+                            f"{func[0]} method needs a docstring")
 
 
 @unittest.skipIf(

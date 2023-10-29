@@ -70,8 +70,11 @@ def put_amenity(amenity_id):
     if not data:
         abort(400, 'Not a JSON')
 
+    ignore_keys = ['id', 'created_at', 'updated_at']
+
     for k, v in data.items():
-        setattr(amenity, k, v)
+        if k not in ignore_keys:
+            setattr(amenity, k, v)
 
     amenity.save()
     return jsonify(amenity.to_dict())

@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Contains CRUD operations for users resources
-"""
+""" Contains CRUD operations for users resources """
 from flask import jsonify, abort, request
 from api.v1.views import app_views
 from models import storage

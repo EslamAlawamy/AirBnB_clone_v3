@@ -59,6 +59,7 @@ def post_user():
     user.save()
     return jsonify(user.to_dict()), 201
 
+
 @app_views.put('/users/<user_id>')
 def put_amenity(user_id):
     """ Updates user """

@@ -61,7 +61,7 @@ def post_user():
 
 
 @app_views.put('/users/<user_id>')
-def put_amenity(user_id):
+def put_user(user_id):
     """ Updates user """
     user = storage.get(User, user_id)
 

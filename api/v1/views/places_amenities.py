@@ -19,7 +19,6 @@ def get_place_amenities(place_id):
         amenity.to_dict()
         for amenity in place.amenities
     ]
-
     return jsonify(amenities)
 
 

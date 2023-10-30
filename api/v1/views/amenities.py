@@ -43,7 +43,6 @@ def post_amenity():
 
     if not data:
         abort(400, 'Not a JSON')
-
     if data.get('name', None):
         amenity = Amenity(**data)
         amenity.save()

@@ -20,7 +20,6 @@ def get_amenities():
 def get_amenity(amenity_id):
     """ Reads amenity """
     amenity = storage.get(Amenity, amenity_id)
-
     if amenity:
         return jsonify(amenity.to_dict())
 

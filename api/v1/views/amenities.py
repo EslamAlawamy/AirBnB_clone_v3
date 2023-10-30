@@ -13,7 +13,6 @@ def get_amenities():
         amenity.to_dict()
         for amenity in storage.all(Amenity).values()
     ]
-
     return jsonify(amenities)
 
 

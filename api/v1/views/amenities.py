@@ -33,7 +33,6 @@ def delete_amenity(amenity_id):
         storage.delete(amenity)
         storage.save()
         return jsonify({})
-
     abort(404)
 
 

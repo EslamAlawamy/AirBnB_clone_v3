@@ -60,7 +60,6 @@ def put_amenity(amenity_id):
     data = request.get_json()
     if not data:
         abort(400, 'Not a JSON')
-
     ignore_keys = ['id', 'created_at', 'updated_at']
 
     for k, v in data.items():

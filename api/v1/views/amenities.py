@@ -69,6 +69,5 @@ def put_amenity(amenity_id):
     for k, v in data.items():
         if k not in ignore_keys:
             setattr(amenity, k, v)
-
     amenity.save()
     return jsonify(amenity.to_dict())

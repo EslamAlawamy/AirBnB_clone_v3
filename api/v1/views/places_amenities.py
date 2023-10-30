@@ -69,11 +69,11 @@ def post_place_amenity(place_id, amenity_id):
         if amenity not in place.amenities:
             place.amenities.append(amenity)
             place.save()
-            return jsonify(amenity), 201
+            return jsonify(amenity.to_dict()), 201
     else:
         if amenity_id not in place.amenity_ids:
             place.amenity_ids.append(amenity_id)
             place.save()
-            return jsonify(amenity), 201
+            return jsonify(amenity.to_dict()), 201
 
-    return jsonify(amenity)
+    return jsonify(amenity.to_dict())

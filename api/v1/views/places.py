@@ -8,7 +8,7 @@ from models.place import Place
 from models.user import User
 
 
-@app_views.get('/cities/<city_id>/places')
+@app_views.route('/cities/<city_id>/places', methods=['GET'])
 def get_places(city_id):
     """ Reads places """
     city = storage.get(City, city_id)
@@ -24,7 +24,7 @@ def get_places(city_id):
     return jsonify(places)
 
 
-@app_views.get('/places/<place_id>')
+@app_views.route('/places/<place_id>', methods=['GET'])
 def get_place(place_id):
     """ Reads place """
     place = storage.get(Place, place_id)
@@ -35,7 +35,7 @@ def get_place(place_id):
     return jsonify(place.to_dict())
 
 
-@app_views.delete('/places/<place_id>')
+@app_views.route('/places/<place_id>', methods=['DELETE'])
 def delete_place(place_id):
     """ Deletes place """
     place = storage.get(Place, place_id)
@@ -48,7 +48,7 @@ def delete_place(place_id):
     abort(404)
 
 
-@app_views.post('/cities/<city_id>/places')
+@app_views.route('/cities/<city_id>/places', methods=['POST'])
 def post_place(city_id):
     """ Creates place """
     city = storage.get(City, city_id)
@@ -80,7 +80,7 @@ def post_place(city_id):
     return jsonify(place.to_dict()), 201
 
 
-@app_views.put('/places/<place_id>')
+@app_views.route('/places/<place_id>', methods=['PUT'])
 def put_place(place_id):
     """ Updates place """
     place = storage.get(Place, place_id)

@@ -6,7 +6,7 @@ from models import storage
 from models.amenity import Amenity
 
 
-@app_views.get('/amenities')
+@app_views.route('/amenities', methods=['GET'])
 def get_amenities():
     """ Reads amenities """
     amenities = [
@@ -17,7 +17,7 @@ def get_amenities():
     return jsonify(amenities)
 
 
-@app_views.get('/amenities/<amenity_id>')
+@app_views.route('/amenities/<amenity_id>', methods=['GET'])
 def get_amenity(amenity_id):
     """ Reads amenity """
     amenity = storage.get(Amenity, amenity_id)
@@ -28,7 +28,7 @@ def get_amenity(amenity_id):
     abort(404)
 
 
-@app_views.delete('/amenities/<amenity_id>')
+@app_views.route('/amenities/<amenity_id>', methods=['DELETE'])
 def delete_amenity(amenity_id):
     """ Deletes amenity """
     amenity = storage.get(Amenity, amenity_id)
@@ -41,7 +41,7 @@ def delete_amenity(amenity_id):
     abort(404)
 
 
-@app_views.post('/amenities')
+@app_views.route('/amenities', methods=['POST'])
 def post_amenity():
     """ Create amenity """
     data = request.get_json()
@@ -57,7 +57,7 @@ def post_amenity():
     abort(400, 'Missing name')
 
 
-@app_views.put('/amenities/<amenity_id>')
+@app_views.route('/amenities/<amenity_id>', methods=['PUT'])
 def put_amenity(amenity_id):
     """ Updates amenity """
     amenity = storage.get(Amenity, amenity_id)

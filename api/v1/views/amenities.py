@@ -29,7 +29,6 @@ def get_amenity(amenity_id):
 def delete_amenity(amenity_id):
     """ Deletes amenity """
     amenity = storage.get(Amenity, amenity_id)
-
     if amenity:
         storage.delete(amenity)
         storage.save()

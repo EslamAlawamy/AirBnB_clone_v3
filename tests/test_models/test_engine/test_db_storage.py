@@ -76,6 +76,7 @@ test_db_storage.py'])
 )
 class TestDBStorage(unittest.TestCase):
     """Test cases for db storage"""
+
     def setUp(self):
         """setup method"""
         self.session = storage._DBStorage__session

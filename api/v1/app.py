@@ -7,7 +7,7 @@ from api.v1.views import app_views
 from models import storage
 
 app = Flask(__name__)
-CORS(app,  resources={"/*": {"origins": "0.0.0.0"}})
+CORS(app, resources={"/*": {"origins": "0.0.0.0"}})
 app.url_map.strict_slashes = False
 app.register_blueprint(app_views)
 

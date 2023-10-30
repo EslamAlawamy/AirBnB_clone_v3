@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/python3
 """ Contains CRUD operations for place_amenities resources """
 from os import getenv
 from flask import jsonify, abort, request

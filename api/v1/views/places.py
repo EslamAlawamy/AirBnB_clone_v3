@@ -95,7 +95,7 @@ def put_place(place_id):
 
     ignore_keys = ['id', 'user_id', 'city_id', 'created_at', 'updated_at']
 
-    for k, v in data:
+    for k, v in data.items():
         if k not in ignore_keys:
             setattr(place, k, v)
 
